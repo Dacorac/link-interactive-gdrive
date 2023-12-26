@@ -13,12 +13,19 @@ let takepicture = function(video, width, height) {
     canvas.width = width;
     canvas.height = height;
     context.drawImage(video, 0, 0, width, height);
-    var data = canvas.toDataURL('image/png');
-    photo.setAttribute('src', data);
 
-    return data;
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error('Failed to create Blob from canvas'));
+        }
+      }, 'image/png');
+    });
   } else {
     clearphoto();
+    return Promise.reject(new Error('Width and height must be provided'));
   }
 }
 

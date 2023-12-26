@@ -1,10 +1,5 @@
 import { takepicture, clearphoto } from './webcam.js';
 
-// Define the file to upload
-const fileName = 'image';
-const folderName = 'pictures';
-const mimeType = 'image/png'
-
 let width = 320;
 let height = 0;
 
@@ -49,46 +44,28 @@ let startbutton = null;
     }
   }, false);
 
-  startbutton.addEventListener('click', function(ev){
-    let imageData = takepicture(video, width, height);
-    console.log(imageData)
-    fetch('/capture', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ data: extractedBase64(imageData) }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Image uploaded:', data);
-        // Show success message or update UI with uploaded image details
-      })
-      .catch((error) => console.error(error));
-    // saveImage(extractedBase64(data));
+  startbutton.addEventListener('click', async function(ev){
+    let imageData = await takepicture(video, width, height);
+
+    const formData = new FormData();
+    formData.append('image', imageData, 'image.png');
+    
+    try {
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      console.log('Image uploaded:', data);
+    }
+    catch(error)
+    {
+      console.error('Error uploading image:', error);
+    }
     ev.preventDefault();
   }, false);
   
   clearphoto();
 })();
 
-let extractedBase64 = (imageData) => imageData.split(',')[1];
-
-// let folder = await googleDriveService.searchFolder(folderName).catch((error) => {
-//   console.error(error);
-//   return null;
-// });
-
-// let saveImage = async function(imageData) {
-//   if (!folder) {
-//     folder = await googleDriveService.createFolder(folderName);
-//   }
-  
-//   // Upload the file to Google Drive
-//   googleDriveService.saveFile(fileName, imageData, mimeType, folder.id).catch((error) => {
-//       console.error(error);
-//       var div = document.getElementById('result');
-//       div.innerHTML += `<p>${error}</p>`;
-//   });
-// }
 
