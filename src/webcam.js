@@ -14,6 +14,9 @@ let takepicture = function(video, width, height) {
     canvas.height = height;
     context.drawImage(video, 0, 0, width, height);
 
+    const data = canvas.toDataURL("image/png");
+    photo.setAttribute("src", data);
+    
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (blob) {
