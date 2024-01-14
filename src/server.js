@@ -39,7 +39,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
   };
 
   const media = {
-    mimeType: 'image/png',
+    mimeType: 'image/jpeg',
     body: fs.createReadStream(req.file.path)
   };
 
