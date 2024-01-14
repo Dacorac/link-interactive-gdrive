@@ -6,7 +6,7 @@ import multer from 'multer';
 const upload = multer({ dest: 'uploads/' });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.static('src'));
 app.use(express.json({ limit: '50mb' }));
@@ -19,9 +19,9 @@ app.get('/', (req, res) => {
 app.post('/upload', upload.single('image'), async (req, res) => {
   const googleDriveService = new GoogleDriveService();
   const now = new Date();
-const offsetMs = now.getTimezoneOffset() * 60 * 1000;
-const dateLocal = new Date(now.getTime() - offsetMs);
-const today = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(now.getTime() - offsetMs);
+  const today = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
 
   const folderName = `Folder${today}`;
 
