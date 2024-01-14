@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from 'fs';
-import { GoogleDriveService } from './services/googleDriveService.js';
+import { GoogleDriveService } from './googleDriveService.js';
 import multer from 'multer';
 
 const upload = multer({ dest: 'uploads/' });
