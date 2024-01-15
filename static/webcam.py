@@ -4,6 +4,7 @@ import subprocess
 import requests
 import base64
 import io
+import re 
 
 # def create_blob_from_base64(image_base64):
 #     try:
@@ -29,29 +30,27 @@ def capture_image():
     # call the .sh to capture the image
     try:
         '/home/pi/link-interactive-webcam/webcam.sh' 
-        output = subprocess.check_output(['/home/pi/link-interactive-webcam/webcam.sh'], stderr=subprocess.STDOUT, text=True)
-        # output = subprocess.check_output(['/home/juliangonzalez/Documentos/link-interactice-gdrive-py/webcam.sh'], stderr=subprocess.STDOUT, text=True) #JULI
-        lines = output.strip().split('\n')
+        # output = subprocess.check_output(['/home/pi/link-interactive-webcam/webcam.sh'], stderr=subprocess.STDOUT, text=True)
+        output = subprocess.check_output(['/home/juliangonzalez/Documentos/link-interactice-gdrive-py/webcam.sh'], stderr=subprocess.STDOUT, text=True) #JULI
 
-        # Get the last line
-        image_data = lines[-1]
-        print(image_data)
-        cleaned_string = ''.join(chr for chr in image_data if 31 < ord(chr) < 127)
+        match = re.search(r"'([^']*)'", output)
+
+        if match:
+            image_data = match.group(1)
+            print(image_data)  
+        else:
+            print("The desired string was not found in the provided shell command.")
 
         # Extract the path
-        rel_path = cleaned_string.split('/')[-1]
+        rel_path = image_data.split('/')[-1]
 
         # Print the path
         print(rel_path)
 
-        # # construct the full file path
-        script_dir = os.path.dirname(__file__)
-        abs_file_path = os.path.join(script_dir, rel_path)
-
         print('Image data')
         print(image_data)
 
-        return abs_file_path, rel_path
+        return image_data, rel_path
     except Exception as e:
         raise RuntimeError(str(e)) from e
 
