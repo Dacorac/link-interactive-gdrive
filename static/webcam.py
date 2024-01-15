@@ -70,6 +70,7 @@ async def upload_image(image_data):
         data = response.json()
         
         print('Image uploaded:', data)
+        os.remove(image_data)
         return data
 
     except requests.exceptions.RequestException as error:
