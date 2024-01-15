@@ -30,8 +30,8 @@ def capture_image():
     # call the .sh to capture the image
     try:
         '/home/pi/link-interactive-webcam/webcam.sh' 
-        # output = subprocess.check_output(['/home/pi/link-interactive-webcam/webcam.sh'], stderr=subprocess.STDOUT, text=True)
-        output = subprocess.check_output(['/home/juliangonzalez/Documentos/link-interactice-gdrive-py/webcam.sh'], stderr=subprocess.STDOUT, text=True) #JULI
+        output = subprocess.check_output(['/home/pi/link-interactive-webcam/webcam.sh'], stderr=subprocess.STDOUT, text=True)
+        # output = subprocess.check_output(['/home/juliangonzalez/Documentos/link-interactice-gdrive-py/webcam.sh'], stderr=subprocess.STDOUT, text=True) #JULI
 
         match = re.search(r"'([^']*)'", output)
 
