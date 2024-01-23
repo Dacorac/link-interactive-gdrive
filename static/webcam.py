@@ -41,17 +41,9 @@ async def upload_image(image_data):
     else:
       print('There is an unexpected error while uploading the file: ', response.status_code)
 
-<<<<<<< Updated upstream
-        data = response.json()
-        
-        print('Image uploaded:', data)
-        os.remove(image_data)
-        return data
-=======
     data = response.json()
     print('Image uploaded:', data)
     return data
->>>>>>> Stashed changes
 
   except requests.exceptions.RequestException as error:
     print('Error uploading image:', error)
