@@ -34,7 +34,6 @@ app.post('/upload', upload.single('image'), async (req, res) => {
   const today = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
 
   const folderName = `Folder${today}`;
-  // const folderName = 'superwurdfolder'
 
   let folder = await googleDriveService.searchFolder(folderName);
 
@@ -57,7 +56,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
   try {
     const response = await googleDriveService.saveFile(fileMetadata, media);
     await fs.unlink(req.file.path, err => console.error(err));
-    res.json({ fileId: response });
+    res.json({ status: response.status });
   } catch (error) {
     console.error('Error uploading image to Google Drive:', error);
     res.status(500).json({ error: 'Error uploading image to Google Drive' });
